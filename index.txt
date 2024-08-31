@@ -1,0 +1,38 @@
+-- Create CUSTOMERS table
+CREATE TABLE CUSTOMERS (
+    CustomerID NUMBER PRIMARY KEY,
+    CustomerName VARCHAR2(100) NOT NULL,
+    ContactNumber VARCHAR2(15),
+    Email VARCHAR2(100),
+    Address VARCHAR2(255)
+);
+
+-- Create PRODUCT table
+CREATE TABLE PRODUCT (
+    ProductID NUMBER PRIMARY KEY,
+    ProductName VARCHAR2(100) NOT NULL,
+    Price NUMBER(10, 2) NOT NULL,
+    StockQuantity NUMBER DEFAULT 0,
+    SupplierID NUMBER,
+    CONSTRAINT fk_supplier FOREIGN KEY (SupplierID) REFERENCES SUPPLIERS(SupplierID)
+);
+
+-- Create ORDERS table
+CREATE TABLE ORDERS (
+    OrderID NUMBER PRIMARY KEY,
+    CustomerID NUMBER,
+    OrderStatus VARCHAR2(20) DEFAULT 'Pending',
+    TotalAmount NUMBER(10, 2),
+    CONSTRAINT fk_customer FOREIGN KEY (CustomerID) REFERENCES CUSTOMERS(CustomerID)
+);
+
+-- Create ORDER_ITEMS table
+CREATE TABLE ORDER_ITEMS (
+    OrderItemID NUMBER PRIMARY KEY,
+    OrderID NUMBER,
+    ProductID NUMBER,
+    Quantity NUMBER NOT NULL,
+    PricePerUnit NUMBER(10, 2) NOT NULL,
+    CONSTRAINT fk_order FOREIGN KEY (OrderID) REFERENCES ORDERS(OrderID),
+    CONSTRAINT fk_product FOREIGN KEY (ProductID) REFERENCES PRODUCT(ProductID)
+);
